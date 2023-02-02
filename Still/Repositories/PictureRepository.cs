@@ -39,6 +39,31 @@ namespace Still.Repositories
             }
         }
 
+        public Picture GetPictureById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT Id, UserProfileId, Description, DateCreated, PictureLocation
+                        FROM Picture
+                        WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    Picture picture = null;
+                    if (reader.Read())
+                    {
+                        picture = NewPictureFromReader(reader);
+                    }
+                 
+                    return picture;
+                }
+            }
+        }
+
         private Picture NewPictureFromReader(SqlDataReader reader)
         {
             return new Picture()

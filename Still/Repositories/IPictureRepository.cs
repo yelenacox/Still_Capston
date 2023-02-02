@@ -6,5 +6,6 @@ namespace Still.Repositories
     public interface IPictureRepository
     {
         List<Picture> GetAllPictures();
+        Picture GetPictureById(int id);
     }
 }

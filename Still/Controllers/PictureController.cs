@@ -22,6 +22,17 @@ namespace Still.Controllers
         {
             return Ok(_pictureRepository.GetAllPictures());
         }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var picture = _pictureRepository.GetPictureById(id);
+            if (picture != null) 
+            {
+                NotFound();
+            }
+            return Ok(picture);
+        }
     }
 }
 
