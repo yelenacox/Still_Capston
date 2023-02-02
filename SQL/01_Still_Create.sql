@@ -8,33 +8,35 @@ USE [Still]
 GO
 
 
+DROP TABLE IF EXISTS [PagePicture];
+DROP TABLE IF EXISTS [Page];
 DROP TABLE IF EXISTS [Picture];
 DROP TABLE IF EXISTS [UserProfile];
-DROP TABLE IF EXISTS [Page];
-DROP TABLE IF EXISTS [PagePicture];
+GO
+
+CREATE TABLE [UserProfile] (
+  [Id] int PRIMARY KEY IDENTITY(1, 1),
+  [FirebaseUserId] nvarchar(255) UNIQUE NOT NULL,
+  [Name] nvarchar(55) NOT NULL,
+  [Email] nvarchar(255) NOT NULL
+)
 GO
 
 CREATE TABLE [Picture] (
   [Id] int PRIMARY KEY IDENTITY(1, 1),
   [UserProfileId] int NOT NULL,
-  [Description] nvarchar(255),
+  [Description] nvarchar(1000),
   [DateCreated] datetime NOT NULL,
   [PictureLocation] nvarchar(255) NOT NULL
 )
 GO
 
-CREATE TABLE [UserProfile] (
-  [Id] int PRIMARY KEY IDENTITY(1, 1),
-  [FireBaseUserId] nvarchar(255) UNIQUE NOT NULL,
-  [Name] nvarchar(255) NOT NULL
-)
-GO
 
 CREATE TABLE [Page] (
   [Id] int PRIMARY KEY IDENTITY(1, 1),
   [UserProfileId] int NOT NULL,
   [Title] nvarchar(255) NOT NULL,
-  [Description] nvarchar(255),
+  [Description] nvarchar(1000),
   [DateCreated] datetime NOT NULL
 )
 GO
@@ -43,7 +45,7 @@ CREATE TABLE [PagePicture] (
   [Id] int PRIMARY KEY IDENTITY(1, 1),
   [PageId] int NOT NULL,
   [PictureId] int NOT NULL,
-  [Description] nvarchar(255)
+  [Description] nvarchar(1000)
 )
 GO
 
