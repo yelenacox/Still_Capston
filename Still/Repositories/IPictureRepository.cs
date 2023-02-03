@@ -8,5 +8,6 @@ namespace Still.Repositories
         List<Picture> GetAllPictures();
         Picture GetPictureById(int id);
         void Add(Picture picture);
+        void Update(Picture picture);
     }
 }

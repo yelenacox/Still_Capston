@@ -57,6 +57,17 @@ namespace Still.Controllers
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Picture picture)
+        {
+            if (id != picture.Id)
+            {
+                return BadRequest();
+            }
+            _pictureRepository.Update(picture);
+            return NoContent();
+        }
     }
 }
 
