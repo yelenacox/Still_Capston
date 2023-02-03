@@ -22,7 +22,7 @@ namespace Still.Repositories
                     cmd.CommandText = @"
                         SELECT Id, FirebaseUserId, [Name], Email
                           FROM UserProfile 
-                          WHERE FirebaseUserId = @FirebaseuserId";
+                          WHERE FirebaseUserId = @FirebaseUserId";
 
                     DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
 

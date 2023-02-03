@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Still.Models;
 using Still.Repositories;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Still.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserProfileController : ControllerBase

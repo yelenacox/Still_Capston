@@ -64,6 +64,32 @@ namespace Still.Repositories
             }
         }
 
+        public void Add(Picture picture)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Picture ( 
+                            UserProfileId, Description, DateCreated, PictureLocation )
+                        OUTPUT INSERTED.ID
+                        VALUES (
+                            @UserProfileId, @Description, @DateCreated, @PictureLocation )";
+                        
+                        picture.DateCreated= DateTime.Now;
+
+                    DbUtils.AddParameter(cmd, "@UserProfileId", picture.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Description", picture.Description);
+                    DbUtils.AddParameter(cmd, "@DateCreated", picture.DateCreated);
+                    DbUtils.AddParameter(cmd, "@PictureLocation", picture.PictureLocation);
+
+                    picture.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
         private Picture NewPictureFromReader(SqlDataReader reader)
         {
             return new Picture()
