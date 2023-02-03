@@ -37,6 +37,35 @@ namespace Still.Repositories
                     }
                 }
             }
+        } 
+        
+        public List<Picture> GetUserPictures(string firebaseUserId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT p.Id, UserProfileId, Description, DateCreated, PictureLocation, u.Id, FirebaseUserId, Email, Name
+                        FROM Picture p
+                        JOIN UserProfile u ON u.Id = p.UserProfileId
+                        WHERE u.FirebaseUserId = @firebaseUserId
+                        ORDER BY DateCreated DESC";
+
+                    cmd.Parameters.AddWithValue("@FirebaseUserId", firebaseUserId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var pictures = new List<Picture>();
+
+                        while (reader.Read())
+                        {
+                            pictures.Add(NewPictureFromReader(reader));
+                        }
+                        return pictures;
+                    }
+                }
+            }
         }
 
         public Picture GetPictureById(int id)
