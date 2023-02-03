@@ -10,5 +10,6 @@ namespace Still.Repositories
         void Add(Picture picture);
         void Update(Picture picture);
         void Delete(int id);
+        List<Picture> GetUserPictures(string firebaseUserId);
     }
 }

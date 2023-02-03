@@ -31,6 +31,17 @@ namespace Still.Controllers
             return Ok(_pictureRepository.GetAllPictures());
         }
 
+        [HttpGet("UserPictures/{firebaseUserId}")]
+        public IActionResult GetPicturesByUser(string firebaseUserId) 
+        {
+            var userPictures = _pictureRepository.GetUserPictures(firebaseUserId);
+            if(userPictures == null)
+            {
+                NotFound();
+            }
+            return Ok(userPictures);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -52,11 +63,6 @@ namespace Still.Controllers
             return CreatedAtAction(nameof(Get), picture);
         }
 
-        private UserProfile GetCurrentUserProfile()
-        {
-            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
-        }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, Picture picture)
@@ -74,6 +80,12 @@ namespace Still.Controllers
         { 
            _pictureRepository.Delete(id);
            return NoContent();
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }
