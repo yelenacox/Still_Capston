@@ -9,5 +9,6 @@ namespace Still.Repositories
         Picture GetPictureById(int id);
         void Add(Picture picture);
         void Update(Picture picture);
+        void Delete(int id);
     }
 }
