@@ -68,6 +68,13 @@ namespace Still.Controllers
             _pictureRepository.Update(picture);
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id) 
+        { 
+           _pictureRepository.Delete(id);
+           return NoContent();
+        }
     }
 }
 
