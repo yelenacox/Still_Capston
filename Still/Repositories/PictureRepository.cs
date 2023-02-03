@@ -90,6 +90,32 @@ namespace Still.Repositories
             }
         }
 
+        public void Update(Picture picture)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Picture
+                            SET UserProfileId = @UserProfileId,
+                                Description = @Description,
+                                DateCreated = @DateCreated,
+                                PictureLocation = @PictureLocation
+                                WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", picture.Id);
+                    DbUtils.AddParameter(cmd, "@UserProfileId", picture.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Description", picture.Description);
+                    DbUtils.AddParameter(cmd, "@DateCreated", picture.DateCreated);
+                    DbUtils.AddParameter(cmd, "@PictureLocation", picture.PictureLocation);
+               
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         private Picture NewPictureFromReader(SqlDataReader reader)
         {
             return new Picture()
