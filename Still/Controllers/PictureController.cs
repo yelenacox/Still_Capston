@@ -1,20 +1,28 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Still.Models;
 using Still.Repositories;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Hosting;
 
 namespace Still.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PictureController : ControllerBase
     {
 
         private readonly IPictureRepository _pictureRepository;
-        public PictureController(IPictureRepository pictureRepository)
+        private readonly IUserProfileRepository _userProfileRepository;
+        public PictureController(
+            IPictureRepository pictureRepository,
+            IUserProfileRepository userProfileRepository)
         {
             _pictureRepository = pictureRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         [HttpGet]
@@ -32,6 +40,22 @@ namespace Still.Controllers
                 NotFound();
             }
             return Ok(picture);
+        }
+
+        [HttpPost]
+        public IActionResult Post(Picture picture)
+        {
+            var currentUserProfile = GetCurrentUserProfile();
+            picture.UserProfileId = currentUserProfile.Id;
+
+            _pictureRepository.Add(picture);
+            return CreatedAtAction(nameof(Get), picture);
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }
