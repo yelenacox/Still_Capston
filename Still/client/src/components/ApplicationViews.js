@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Hello from "./Hello";
 import Login from "./Login";
+import { PictureList } from "./Pictures/PictureList";
+import { UserPictureList } from "./Pictures/UserPictureList";
 import Register from "./Register";
 import { UserList } from "./UserList";
 
@@ -21,6 +23,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="userpictures" element={<UserPictureList />} />
     
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
