@@ -3,6 +3,7 @@ import "firebase/auth";
 import { useEffect, useState } from "react";
 import { getUserPictures } from "../../modules/PictureManager";
 import { Card } from "reactstrap";
+import { Link } from "react-router-dom";
 
 
 export const UserPictureList = () => {
@@ -22,8 +23,7 @@ export const UserPictureList = () => {
         <div className="picture-container">
             <div className="row justify-content-center">
                 {userPictures.map((p) => {return <Card key={p.Id}>
-                    <div className="picture"><img style={{ width: 300 }} src={p.pictureLocation} /></div>
-                    <div className="picture-description">{p.description}</div>
+                    <div className="picture"><Link to={`/picture/${p.id}`}><img style={{ width: 300 }} src={p.pictureLocation} /></Link></div>
                 </Card>})}
             </div>
         </div>
