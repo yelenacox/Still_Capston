@@ -12,7 +12,7 @@ export const UserPictureList = () => {
     const firebaseUserId = firebase.auth().currentUser.uid
 
     const getPicturesByUser = () => {
-        getUserPictures(firebaseUserId).then(userPictures => setUserPictures(userPictures));
+        getUserPictures().then(userPictures => setUserPictures(userPictures));
     }
 
     useEffect(() => {
