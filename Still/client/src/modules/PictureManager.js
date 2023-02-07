@@ -58,3 +58,26 @@ export const getPicById = (id) => {
         });
     });
 };
+
+export const addPicture = (picture) => {
+    return getToken().then((token) => {
+        return fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(picture),
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else if (res.status === 401) {
+                throw new Error ("Unauthorized");
+            } else {
+                throw new Error (
+                    "An unknown error occurred while trying to save a new picture.",
+                );
+            }
+        });
+    });
+}

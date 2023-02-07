@@ -109,7 +109,7 @@ namespace Still.Repositories
                         VALUES (
                             @UserProfileId, @Description, @DateCreated, @PictureLocation )";
                         
-                        picture.DateCreated= DateTime.Now;
+                        picture.DateCreated = DateTime.Now;
 
                     DbUtils.AddParameter(cmd, "@UserProfileId", picture.UserProfileId);
                     DbUtils.AddParameter(cmd, "@Description", picture.Description);

@@ -21,6 +21,7 @@ export const UserPictureList = () => {
 
     return (
         <div className="picture-container">
+             <a href="/addPicture" class="btn btn-dark active mb-3" type="button">New Picture</a>
             <div className="row justify-content-center">
                 {userPictures.map((p) => {return <Card key={p.Id}>
                     <div className="picture"><Link to={`/picture/${p.id}`}><img style={{ width: 300 }} src={p.pictureLocation} /></Link></div>
