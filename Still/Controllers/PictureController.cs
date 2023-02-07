@@ -31,10 +31,11 @@ namespace Still.Controllers
             return Ok(_pictureRepository.GetAllPictures());
         }
 
-        [HttpGet("UserPictures/{firebaseUserId}")]
-        public IActionResult GetPicturesByUser(string firebaseUserId) 
+        [HttpGet("UserPictures")]
+        public IActionResult GetPicturesByUser() 
         {
-            var userPictures = _pictureRepository.GetUserPictures(firebaseUserId);
+            var currentUserProfile = GetCurrentUserProfile();
+            var userPictures = _pictureRepository.GetUserPictures(currentUserProfile.Id);
             if(userPictures == null)
             {
                 NotFound();
@@ -45,12 +46,13 @@ namespace Still.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
+            var currentUserProfile = GetCurrentUserProfile();
             var picture = _pictureRepository.GetPictureById(id);
-            if (picture != null) 
+            if (picture.UserProfileId == currentUserProfile.Id)
             {
-                NotFound();
+                return Ok(picture);
             }
-            return Ok(picture);
+            return NotFound();
         }
 
         [HttpPost]

@@ -21,9 +21,9 @@ export const getAllPictures = () => {
     });
 };
 
-export const getUserPictures = (firebaseUserId) => {
+export const getUserPictures = (id) => {
     return getToken().then((token) => {
-        return fetch(`${apiUrl}/UserPictures/${firebaseUserId}`, {
+        return fetch(`${apiUrl}/UserPictures`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`

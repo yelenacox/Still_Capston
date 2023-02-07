@@ -6,6 +6,7 @@ using Still.Models;
 using Still.Utils;
 using System;
 using Microsoft.Extensions.Hosting;
+using System.Reflection.PortableExecutable;
 
 namespace Still.Repositories
 {
@@ -39,7 +40,7 @@ namespace Still.Repositories
             }
         } 
         
-        public List<Picture> GetUserPictures(string firebaseUserId)
+        public List<Picture> GetUserPictures(int userProfileId)
         {
             using (var conn = Connection)
             {
@@ -49,11 +50,11 @@ namespace Still.Repositories
                     cmd.CommandText = @"
                         SELECT p.Id, UserProfileId, Description, DateCreated, PictureLocation, u.Id, FirebaseUserId, Email, Name
                         FROM Picture p
-                        JOIN UserProfile u ON u.Id = p.UserProfileId
-                        WHERE u.FirebaseUserId = @firebaseUserId
+                        JOIN UserProfile u ON u.Id = @userProfileId
+                        WHERE @userProfileId = p.UserProfileId
                         ORDER BY DateCreated DESC";
+                    cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
 
-                    cmd.Parameters.AddWithValue("@FirebaseUserId", firebaseUserId);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         var pictures = new List<Picture>();
@@ -92,6 +93,7 @@ namespace Still.Repositories
                 }
             }
         }
+
 
         public void Add(Picture picture)
         {
