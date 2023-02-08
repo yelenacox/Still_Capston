@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Permissions;
+using System.Collections.Generic;
 
 namespace Still.Models
 {
@@ -17,5 +17,7 @@ namespace Still.Models
 
         [Required]
         public DateTime DateCreated { get; set; }
+
+        public List<PagePicture> PagePictures { get; set; }
     }
 }
