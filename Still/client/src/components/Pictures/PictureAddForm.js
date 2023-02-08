@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { useNavigate } from "react-router";
-// import { Form } from "react-router-dom";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { addPicture } from "../../modules/PictureManager";
 
