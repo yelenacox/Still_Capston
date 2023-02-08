@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { Button, Card, Input } from "reactstrap"
 import { editPicture, getPicById } from "../../modules/PictureManager"
+import { PictureDelete } from "./PictureDelete"
 
 export const PictureDetails = () => {
     const {picId} = useParams()
@@ -29,11 +30,12 @@ export const PictureDetails = () => {
                     <div className="picture"><img style={{ width: 500 }} src={pic.pictureLocation} /></div>
                     {!picEdit ? <>
                     <div className="picture-description">{pic.description} </div> 
+                    <PictureDelete/>
                     <Button onClick={() => setPicEdit(true)}>Edit</Button></>
                     : <><div clasName="picture-descrption-edit">
                         <Input 
                         type="text"
-                        placeholder="picture-description"
+                        placeholder="Picture description"
                         value={description}
                         onChange={(e)=>{setDescription(e.target.value)}}
                         />
