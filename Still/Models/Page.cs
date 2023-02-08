@@ -17,5 +17,7 @@ namespace Still.Models
 
         [Required]
         public DateTime DateCreated { get; set; }
+
+        public PagePicture PagePicture { get; set; }
     }
 }
