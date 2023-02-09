@@ -36,6 +36,17 @@ namespace Still.Controllers
             return Ok(userPages);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var currentUserProfile = GetCurrentUserProfile();
+            var page = _pageRepository.GetPageById(id);
+            if(page.UserProfileId != currentUserProfile.Id)
+            {
+               return NotFound();
+            }
+            return Ok(page);
+        }
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
