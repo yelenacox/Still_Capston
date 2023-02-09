@@ -1,0 +1,17 @@
+.page {
+     border: 1px solid black;
+     width: 400px;
+     margin: 50px;
+     display: flex;
+     flex-flow: row wrap;
+}
+
+.page-description 
+{
+    font-size: xx-small;
+}
+
+link { 
+    text-decoration: none;
+  }
+  
