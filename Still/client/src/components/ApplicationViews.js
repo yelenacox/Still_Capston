@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Hello from "./Hello";
 import Login from "./Login";
+import { PageDetails } from "./Pages/PageDetails";
 import { PageList } from "./Pages/PageList";
 import { PictureAddForm } from "./Pictures/PictureAddForm";
 import { PictureDetails } from "./Pictures/PictureDetails";
@@ -30,8 +31,8 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="picture/:picId" element={<PictureDetails />} />
           <Route path="addPicture" element={<PictureAddForm />} />
           <Route path="page" element={<PageList />} />
+          <Route path="page/:pageId" element={<PageDetails />} />
 
-postId
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>

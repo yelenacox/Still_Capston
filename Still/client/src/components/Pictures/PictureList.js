@@ -19,8 +19,7 @@ export const PictureList = () => {
             <div className="row justify-content-center">
                 {pictures.map((p) => {return <Card key={p.Id}>
                     <div className="picture"><img style={{ width: 300 }}src={p.pictureLocation} /></div>
-                    <div className="picture-description">{p.description}</div>
-                </Card>})}
+                     </Card>})}
             </div>
         </div>
     )

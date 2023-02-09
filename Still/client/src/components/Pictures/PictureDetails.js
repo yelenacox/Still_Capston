@@ -3,6 +3,7 @@ import { useParams } from "react-router"
 import { Button, Card, Input } from "reactstrap"
 import { editPicture, getPicById } from "../../modules/PictureManager"
 import { PictureDelete } from "./PictureDelete"
+import "./PictureDetails.css"
 
 export const PictureDetails = () => {
     const {picId} = useParams()
@@ -26,13 +27,13 @@ export const PictureDetails = () => {
     return (
         <div className="picture-container">
             <div className="row justify-content-center">
-                <Card key={pic.Id}>
+                <Card key={pic.id}>
                     <div className="picture"><img style={{ width: 500 }} src={pic.pictureLocation} /></div>
                     {!picEdit ? <>
                     <div className="picture-description">{pic.description} </div> 
                     <PictureDelete/>
                     <Button onClick={() => setPicEdit(true)}>Edit</Button></>
-                    : <><div clasName="picture-descrption-edit">
+                    : <><div clasName="picture-description-edit">
                         <Input 
                         type="text"
                         placeholder="Picture description"

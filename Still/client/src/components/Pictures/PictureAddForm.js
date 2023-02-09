@@ -31,7 +31,7 @@ export const PictureAddForm = () => {
                 <Label for="description">Description</Label>
                 <Input
                 id="description"
-                type="text"
+                type="textarea"
                 onChange={(e) => setPicture({...picture, description: e.target.value})}
                 />
             </FormGroup>
