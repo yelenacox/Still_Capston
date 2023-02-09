@@ -77,25 +77,64 @@ namespace Still.Repositories
                 }
             }
         }
-    }
-
-    /*private Page NewPageFromReader(SqlDataReader reader)
-    {
-        return new Page()
+        public Page GetPageById(int id)
         {
-            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-            UserProfileId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
-            Title = reader.GetString(reader.GetOrdinal("Title")),
-            Description = DbUtils.GetString(reader, "Description"),
-            DateCreated = reader.GetDateTime(reader.GetOrdinal("DateCreated")),
-            PagePictures = new List<PagePicture>()
+            using (var conn = Connection)
             {
-                PagePictures.Add()
-                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                PageId = reader.GetInt32(reader.GetOrdinal("PageId")),
-                PictureId = reader.GetInt32(reader.GetOrdinal("PictureId")),
-            },
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT x.Id, x.UserProfileId AS PageUserId, x.Title, x.Description AS PageDescription, x.DateCreated AS PageDateCreated, 
+                               pp.Id AS PagePictureId, pp.PageId, pp.PictureId, 
+                               pi.Id AS PictureId, pi.UserProfileId AS PictureUserId, pi.Description AS PictureDescription, pi.DateCreated AS PictureDateCreated, pi.PictureLocation
+                        FROM Page x
+                        JOIN PagePicture pp on pp.PageId = x.id
+                        JOIN Picture pi on pi.Id = pp.PictureId
+                        WHERE @id = x.id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        Page page = null;
+                        while (reader.Read())
+                        {
+                            if (page == null)
+                            {
+                                page = new Page()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                    UserProfileId = reader.GetInt32(reader.GetOrdinal("PageUserId")),
+                                    Title = reader.GetString(reader.GetOrdinal("Title")),
+                                    Description = DbUtils.GetString(reader, "PageDescription"),
+                                    DateCreated = reader.GetDateTime(reader.GetOrdinal("PageDateCreated")),
+                                    PagePictures = new List<PagePicture>()
+                                };
+                            }
+                            if (DbUtils.IsNotDbNull(reader, "PagePictureId"))
+                            {
+                                page.PagePictures.Add(new PagePicture()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("PagePictureId")),
+                                    PageId = reader.GetInt32(reader.GetOrdinal("PageId")),
+                                    PictureId = reader.GetInt32(reader.GetOrdinal("PictureId")),
+                                    Picture = new Picture()
+                                    {
+                                        Id = reader.GetInt32(reader.GetOrdinal("PictureId")),
+                                        UserProfileId = reader.GetInt32(reader.GetOrdinal("PictureUserId")),
+                                        Description = DbUtils.GetString(reader, "PictureDescription"),
+                                        DateCreated = reader.GetDateTime(reader.GetOrdinal("PictureDateCreated")),
+                                        PictureLocation = reader.GetString(reader.GetOrdinal("PictureLocation")),
+                                    }
+                                });
+                            }
+                        }
+                        return page;
+                    }
+                    
 
-    }*/
+                }
+            }
+        }
+    }
 }
 

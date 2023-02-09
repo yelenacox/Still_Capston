@@ -6,5 +6,6 @@ namespace Still.Repositories
     public interface IPageRepository
     {
         List<Page> GetAllPagesByUser(int userProfileId);
+        Page GetPageById(int id);
     }
 }

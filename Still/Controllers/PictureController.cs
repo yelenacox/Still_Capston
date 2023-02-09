@@ -48,11 +48,11 @@ namespace Still.Controllers
         {
             var currentUserProfile = GetCurrentUserProfile();
             var picture = _pictureRepository.GetPictureById(id);
-            if (picture.UserProfileId == currentUserProfile.Id)
+            if (picture.UserProfileId != currentUserProfile.Id)
             {
-                return Ok(picture);
-            }
             return NotFound();
+            }
+                return Ok(picture);
         }
 
         [HttpPost]
