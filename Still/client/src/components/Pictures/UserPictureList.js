@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export const UserPictureList = () => {
     const [userPictures, setUserPictures] = useState ([]);
 
-    const firebaseUserId = firebase.auth().currentUser.uid
+    // const firebaseUserId = firebase.auth().currentUser.uid
 
     const getPicturesByUser = () => {
         getUserPictures().then(userPictures => setUserPictures(userPictures));
