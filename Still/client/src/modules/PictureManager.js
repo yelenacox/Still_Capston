@@ -21,7 +21,7 @@ export const getAllPictures = () => {
     });
 };
 
-export const getUserPictures = (id) => {
+export const getUserPictures = () => {
     return getToken().then((token) => {
         return fetch(`${apiUrl}/UserPictures`, {
             method: "GET",
