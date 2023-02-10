@@ -7,5 +7,7 @@ namespace Still.Repositories
     {
         List<Page> GetAllPagesByUser(int userProfileId);
         Page GetPageById(int id);
+        int Add(Page page);
+        void AddPagePicture(PagePicture pagePicture);
     }
 }
