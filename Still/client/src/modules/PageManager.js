@@ -62,3 +62,29 @@ export const addPage = (page, pictureIds) => {
         });
     });
 }
+
+export const deletePage = (id) => {
+    return getToken().then((token) => {
+        return fetch(`${apiUrl}/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+         })
+        .then((res) => {
+            if (res.ok) {
+                return res;
+            } else if (res.status === 401) {
+                throw new Error ("Unauthorized");
+            } 
+            else {
+                throw new Error (
+                    "An unknown error occurred while trying to delete picture.",
+               )
+                ;
+            }
+        }
+        );
+    });
+}

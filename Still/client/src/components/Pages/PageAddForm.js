@@ -25,14 +25,14 @@ export const PageAddForm = () => {
 
     const submitForm = (e) => {
         e.preventDefault();
-        console.log(e.target.pagePicture)
         const picIds = []
         e.target.pagePicture.forEach((picture) => {
+            console.log(e.target.pagePicture)
             if (picture.checked) { picIds.push(picture.id) }
         })
-        addPage(page, picIds)
-        .then(() => navigate(`/page`))
-        .catch((err) => alert(`An error occurred: ${err.message}`))
+        // addPage(page, picIds)
+        // .then(() => navigate(`/page`))
+        // .catch((err) => alert(`An error occurred: ${err.message}`))
     };
 
     return (

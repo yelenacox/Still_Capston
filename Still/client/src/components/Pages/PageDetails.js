@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { Button, Card, Input } from "reactstrap"
 import { getPageById } from "../../modules/PageManager"
+import { PageDelete } from "./PageDelete"
 import "./PageDetails.css"
 
 
@@ -34,6 +35,7 @@ export const PageDetails = () => {
                         )}</div>
                     </div>
                 </Card>
+                <PageDelete />
             </div>
         </div>
     )
