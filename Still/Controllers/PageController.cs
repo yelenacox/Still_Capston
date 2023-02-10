@@ -6,6 +6,8 @@ using Still.Repositories;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
+
 namespace Still.Controllers
 {
     [Authorize]
@@ -47,10 +49,36 @@ namespace Still.Controllers
             }
             return Ok(page);
         }
+
+        [HttpPost]
+        public IActionResult Post(RequestParams requestParams)
+        {
+            Page page = requestParams.page;
+            List<int> pictureIds = requestParams.pictureIds;
+
+            var currentUserProfile = GetCurrentUserProfile();
+            page.UserProfileId = currentUserProfile.Id;
+
+            int pageId = _pageRepository.Add(page);
+            foreach (var pictureId in pictureIds)
+            {
+                PagePicture pp = new PagePicture();
+                pp.PictureId = pictureId;
+                pp.PageId= pageId;
+                _pageRepository.AddPagePicture(pp);
+            }
+            return CreatedAtAction(nameof(Get), page);
+        }
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
+    }
+    public class RequestParams
+    {
+        public Page page { get; set; }
+        public List<int> pictureIds { get; set; }
     }
 }

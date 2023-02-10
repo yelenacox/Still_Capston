@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Still.Models;
 using Still.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -132,6 +133,57 @@ namespace Still.Repositories
                     }
                     
 
+                }
+            }
+        }
+
+        public int Add(Page page)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Page ( 
+                            UserProfileId , Title, Description, DateCreated  )                            
+                        OUTPUT INSERTED.ID
+                        VALUES ( 
+                            @UserProfileId, @Title, @Description, @DateCreated )";
+                    page.DateCreated = DateTime.Now;
+
+                    DbUtils.AddParameter(cmd, "@UserProfileId", page.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Title", page.Title);
+                    DbUtils.AddParameter(cmd, "@Description", page.Description);
+                    DbUtils.AddParameter(cmd, "@DateCreated", page.DateCreated);
+
+                    page.Id = (int)cmd.ExecuteScalar();
+                    return page.Id;
+
+                }
+            }
+        }
+
+        public void AddPagePicture(PagePicture pagePicture)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO PagePicture ( 
+                            PageId, PictureId, Description )
+                        OUTPUT INSERTED.ID
+                        VALUES (
+                            @PageId, @PictureId, @Description )";
+
+                    DbUtils.AddParameter(cmd, "@PageId", pagePicture.PageId);
+                    DbUtils.AddParameter(cmd, "@PictureId", pagePicture.PictureId);
+                    DbUtils.AddParameter(cmd, "@Description", pagePicture.Description);
+
+                    pagePicture.Id = (int)cmd.ExecuteScalar();
+                   
                 }
             }
         }
