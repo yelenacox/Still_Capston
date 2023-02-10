@@ -39,3 +39,26 @@ export const getPageById = (id) => {
         });
     });
 };
+
+export const addPage = (page, pictureIds) => {
+    return getToken().then((token) => {
+        return fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({"page":{...page},"pictureIds":pictureIds}),
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else if (res.status === 401) {
+                throw new Error ("Unauthorized");
+            } else {
+                throw new Error (
+                    "An unknown error occurred while trying to save a new picture.",
+                );
+            }
+        });
+    });
+}
