@@ -18,7 +18,7 @@ export const PageList = () => {
 
     return (
         <div className="page-container">
-            {/* <a href="/addPicture" className="btn btn-dark active mb-3" type="button">New Picture</a> */}
+            <a href="/addPage" className="btn btn-dark active mb-3" type="button">New Page</a>
             <div className="row justify-content-center">
                 {pages.map((p) => {
                     return <Card key={p.Id}>
