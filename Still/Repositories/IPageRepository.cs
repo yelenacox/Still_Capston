@@ -9,5 +9,6 @@ namespace Still.Repositories
         Page GetPageById(int id);
         int Add(Page page);
         void AddPagePicture(PagePicture pagePicture);
+        void Delete(int id);
     }
 }

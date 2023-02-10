@@ -70,6 +70,13 @@ namespace Still.Controllers
             return CreatedAtAction(nameof(Get), page);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _pageRepository.Delete(id);
+            return NoContent();
+        }
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
