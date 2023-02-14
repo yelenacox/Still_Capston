@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { addPage } from "../../modules/PageManager";
 import { getUserPictures } from "../../modules/PictureManager";
@@ -10,8 +10,7 @@ export const PageAddForm = () => {
         description: ""
     });
     const [pictures, setPictures] = useState([]);
-    const [pagePictures, setPagePictures] = useState([]);
-
+    const {pageId} = useParams() 
     const getAll = () => {
         getUserPictures().then(pictures => setPictures(pictures));
     }
@@ -27,12 +26,11 @@ export const PageAddForm = () => {
         e.preventDefault();
         const picIds = []
         e.target.pagePicture.forEach((picture) => {
-            console.log(e.target.pagePicture)
             if (picture.checked) { picIds.push(picture.id) }
         })
-        // addPage(page, picIds)
-        // .then(() => navigate(`/page`))
-        // .catch((err) => alert(`An error occurred: ${err.message}`))
+        addPage(page, picIds)
+        .then(() => navigate(`/page`))
+        .catch((err) => alert(`An error occurred: ${err.message}`))
     };
 
     return (
