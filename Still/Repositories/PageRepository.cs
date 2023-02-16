@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Still.Models;
 using Still.Utils;
 using System;
@@ -188,6 +187,87 @@ namespace Still.Repositories
             }
         }
 
+        public void Update(Page page)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Page
+                            SET Title = @Title, 
+                                Description = @Description 
+                                WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", page.Id);
+                    DbUtils.AddParameter(cmd, "@UserProfileId", page.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Title", page.Title);
+                    DbUtils.AddParameter(cmd, "@Description", page.Description);
+                
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void UpdatePagePicture(PagePicture pagePicture)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    UPDATE PagePicture
+                    SET PageId = @PageId, 
+                        PictureId = @PictureId, 
+                        Description = @Description
+                        WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", pagePicture.Id);
+                    DbUtils.AddParameter(cmd, "@PageId", pagePicture.PageId);
+                    DbUtils.AddParameter(cmd, "@PictureId", pagePicture.PictureId);
+                    DbUtils.AddParameter(cmd, "@Description", pagePicture.Description);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+            }
+        }
+
+        public List<PagePicture> GetPagePicturesByPageId(int pageId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT Id, PageId, PictureId
+                        FROM PagePicture 
+                        WHERE @pageId = PageId";
+                    //cmd.Parameters.AddWithValue("@pageId", pageId);
+                    DbUtils.AddParameter(cmd, "@PageId", pageId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var pagePictures = new List<PagePicture>();
+
+                        while (reader.Read())
+                        {
+                            pagePictures.Add(new PagePicture()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                PageId = reader.GetInt32(reader.GetOrdinal("PageId")),
+                                PictureId = reader.GetInt32(reader.GetOrdinal("PictureId"))
+                            });
+                        }
+                        return pagePictures;
+                    }
+                }
+            }
+        }
+
         public void Delete (int id)
         {
             using (var conn = Connection)
@@ -197,6 +277,21 @@ namespace Still.Repositories
                 {
                     cmd.CommandText = @"
                         DELETE FROM Page
+                        WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }public void DeletePagePicture (int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        DELETE FROM PagePicture
                         WHERE Id = @Id";
 
                     DbUtils.AddParameter(cmd, "@Id", id);

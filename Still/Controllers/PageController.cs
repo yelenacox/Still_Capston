@@ -70,6 +70,46 @@ namespace Still.Controllers
             return CreatedAtAction(nameof(Get), page);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, RequestParams rP)
+        {
+            if (id != rP.page.Id)
+            {
+                return BadRequest();
+            }
+            _pageRepository.Update(rP.page);
+            //get all rows from PagePicture table where pageid is id
+            List<PagePicture> pagePictureList = _pageRepository.GetPagePicturesByPageId(id);
+           
+                var newIds = new List<int>(rP.pictureIds);
+                foreach (var pp in pagePictureList)
+                {
+                    /*if the requested picture Ids do not contain any of the existing PagePictures 
+                     (i.e. we no longer want the pictures that are already in PagePictures), delete them from PagePictures*/
+                    if (!rP.pictureIds.Contains(pp.PictureId))
+                    {
+                        _pageRepository.DeletePagePicture(pp.Id);
+                    }
+                    /*if the PagePictures we want are already there, remove them from the list of newly requested Ids (newIds) because they are already there
+                    and we don't need to add them*/
+                    else
+                    {
+                        newIds.Remove(pp.PictureId);
+                    };
+                }
+            
+                //if there no picturs on the page, add all of the requested PagePictures
+                foreach (var requestId in newIds)
+                {
+                    var newPp = new PagePicture();
+                    newPp.PictureId = requestId;
+                    newPp.PageId = id;
+                    _pageRepository.AddPagePicture(newPp);
+                }
+                return NoContent();
+            
+        }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
